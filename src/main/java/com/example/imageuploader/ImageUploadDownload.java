@@ -23,6 +23,13 @@ public class ImageUploadDownload extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
+        System.out.println("init running");
+        File directory = new File(getServletContext().getRealPath("/images/"));
+
+        if(!directory.exists()){
+            directory.mkdir();
+            System.out.println("directory created at " + directory.getAbsolutePath());
+        }
     }
 
     @Override

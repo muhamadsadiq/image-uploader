@@ -64,9 +64,15 @@ color: #828282;
     background: #F6F8FB;
     border: 1px dashed #97BEF4;
     border-radius: 12px;
+    overflow: hidden;
 }
 .image img{
     margin: 35px 0 35px 0;
+    height: 218.9px;
+    max-width: 338px;
+}
+.image #output{
+    margin: 0;
 }
 .image p{
     /* position: absolute; */

@@ -44,7 +44,7 @@
                 <p>Uploaded Successfully!</p>
             </div>
             <div class="image">
-                <img src="./images/${imageName}">
+                <img id="output" src="./images/${imageName}">
             </div>
             <div class=" link">
                 <input type="text" id="url-holder" value="${link}" readonly disabled>
