@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="Image-Uploader">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>Image-Uploader</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="Image-Uploader-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="Image-Uploader:war exploded" />
+    </root>
+  </artifact>
+</component>
