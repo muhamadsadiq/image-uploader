@@ -2,7 +2,12 @@ package com.example.imageuploader;
 
 
 
+import com.example.imageuploader.dao.ImageDAO;
+import com.example.imageuploader.dao.ImageDAOImp;
+import com.example.imageuploader.model.Image;
+
 import java.io.*;
+import java.util.Random;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -10,7 +15,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 
-@WebServlet(name = "imageDownloader", value = "/image-downloader")
+@WebServlet(name = "imageDownloader", value = "/download")
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
         maxFileSize = 1024 * 1024 * 10,      // 10 MB
@@ -19,13 +24,14 @@ import javax.servlet.annotation.*;
 public class ImageUploadDownload extends HttpServlet {
 
     private String filePath;
+    private ImageDAO imageDAOI;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         System.out.println("init running");
         File directory = new File(getServletContext().getRealPath("/images/"));
-
+        imageDAOI =  new ImageDAOImp();
         if(!directory.exists()){
             directory.mkdir();
             System.out.println("directory created at " + directory.getAbsolutePath());
@@ -76,6 +82,8 @@ public class ImageUploadDownload extends HttpServlet {
         try {
             Part filePart = request.getPart("file");
             String fileName = filePart.getSubmittedFileName();
+            Image image = new Image(fileName,getUniqueId());
+            imageDAOI.addImage(image);
             System.out.println(fileName);
             filePath = getServletContext().getRealPath("/images/") + fileName;
 
@@ -84,7 +92,12 @@ public class ImageUploadDownload extends HttpServlet {
                 System.out.println(filePath);
                 filePart.write(filePath);
             }
-            request.setAttribute("link", request.getRequestURL()+"?fileName="+fileName);
+            StringBuffer url = request.getRequestURL();
+            String uri = request.getRequestURI();
+            System.out.println(uri);
+            String host = url.substring(0, url.indexOf(uri));
+            request.setAttribute("link", host+"/Image_Uploader"+"/ready?id="+image.getImageId());
+
             request.setAttribute("imageName", fileName);
             request.getRequestDispatcher("download.jsp").forward(request, response);
 //            PrintWriter printWriter = response.getWriter();
@@ -97,6 +110,43 @@ public class ImageUploadDownload extends HttpServlet {
     }
 
     public void destroy() {
+
+    }
+
+    public String getUniqueId (){
+
+
+            String id = RandomIdGenerator.getBase62(16);
+            if(imageDAOI.getAllImages()
+                    .stream()
+                    .map((image -> image.getImageId()))
+                    .anyMatch((imageId)->id.equals(imageId))){
+                return getUniqueId();
+            }
+            else{
+                return id;
+            }
+
+
+
+    }
+
+    static class RandomIdGenerator {
+        private static char[] _base62chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+                .toCharArray();
+
+        private static Random _random = new Random();
+
+        public static String getBase62(int length) {
+            StringBuilder sb = new StringBuilder(length);
+
+            for (int i = 0; i < length; i++)
+                sb.append(_base62chars[_random.nextInt(62)]);
+
+            return sb.toString();
+        }
+
+
 
     }
 }

@@ -9,13 +9,7 @@
   maximum-scale=5"
     />
 
-    <link rel="icon" href="devchallenges.png" />
 
-    <link
-            rel="shortcut icon"
-            type="image/x-icon"
-            href="https://devchallenges.io/"
-    />
 
     <link
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
@@ -25,11 +19,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./globe.css">
 
-    <title>Devchallenges</title>
+    <title>Image Uploader</title>
 </head>
 <body>
-    <form action="image-downloader" method="post" id="input-form" enctype="multipart/form-data">
+    <form action="download" method="post" id="input-form" enctype="multipart/form-data">
         <div class="card">
             <div class="header">
                 <p>Upload your image</p>
